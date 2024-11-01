@@ -8,6 +8,7 @@ import {
     useClerk,
 } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { IconUser } from "@tabler/icons-react";
 
 export default function UserButtonComponent() {
     const { loaded } = useClerk();
@@ -35,7 +36,7 @@ export default function UserButtonComponent() {
             <SignedOut>
                 <SignInButton>
                     <Button variant="ghost" size="sm">
-                        Sign in
+                        <IconUser /> Sign in
                     </Button>
                 </SignInButton>
             </SignedOut>

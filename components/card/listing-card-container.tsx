@@ -23,7 +23,7 @@ export const ListingCardContainer = ({ listings }: { listings: Listing[] }) => {
 
     return (
         <div className="space-y-6">
-            <div className="bg-background/90 max-w-[300px] mx-auto backdrop-blur-sm p-4 rounded-lg shadow-lg">
+            <div className="bg-background/90 max-w-[600px] mx-auto backdrop-blur-sm p-4 rounded-lg shadow-lg">
                 <div className="flex flex-col gap-2 items-center">
                     <label className="text-sm font-medium">Price Range</label>
                     <div className="w-48">

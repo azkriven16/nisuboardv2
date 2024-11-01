@@ -1,3 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import { IconMenu2, IconUserQuestion } from "@tabler/icons-react";
+import Link from "next/link";
 import Logo from "../logo";
 import ThemeToggle from "../theme-toggle";
 import UserButtonComponent from "../user-button";
@@ -9,8 +13,32 @@ export default function TenantNavbar() {
                 <Logo />
 
                 <div className="flex items-center gap-2 pl-4 border-l">
-                    <ThemeToggle />
-                    <UserButtonComponent />
+                    <Drawer>
+                        <DrawerTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <IconMenu2 className="h-5 w-5" />
+                            </Button>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                            <div className="flex flex-col">
+                                <Link
+                                    href="/become-landlord"
+                                    className="flex items-center gap-2 px-4 py-3 text-sm hover:bg-muted transition-colors border-b"
+                                >
+                                    <Button size="icon" variant="ghost">
+                                        <IconUserQuestion className="h-4 w-4" />
+                                    </Button>
+                                    Become a Landlord
+                                </Link>
+                                <div className="flex items-center px-4 py-3 text-sm hover:bg-muted transition-colors border-b">
+                                    <ThemeToggle /> Theme Toggle
+                                </div>
+                                <div className="flex items-center px-4 py-3 hover:bg-muted transition-colors">
+                                    <UserButtonComponent />
+                                </div>
+                            </div>
+                        </DrawerContent>
+                    </Drawer>
                 </div>
             </div>
         </nav>
