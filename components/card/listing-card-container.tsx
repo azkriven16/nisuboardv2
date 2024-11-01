@@ -21,6 +21,14 @@ export const ListingCardContainer = ({ listings }: { listings: Listing[] }) => {
         setPriceRange([value[0], value[1]]);
     };
 
+    if (listings.length === 0) {
+        return (
+            <div className="text-center py-10">
+                <p className="text-muted-foreground">No listings found</p>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-6">
             <div className="bg-background/90 max-w-[600px] mx-auto backdrop-blur-sm p-4 rounded-lg shadow-lg">
@@ -41,11 +49,19 @@ export const ListingCardContainer = ({ listings }: { listings: Listing[] }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredListings.map((listing) => (
-                    <ListingCard key={listing.id} listing={listing} />
-                ))}
-            </div>
+            {filteredListings.length === 0 ? (
+                <div className="text-center py-10">
+                    <p className="text-muted-foreground">
+                        No listings match the selected price range
+                    </p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredListings.map((listing) => (
+                        <ListingCard key={listing.id} listing={listing} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

@@ -15,10 +15,10 @@ export default async function LandlordLayout({
     }
 
     return (
-        <div className="min-h-screen pb-24">
+        <>
             <LandlordNavbar />
             <main>{children}</main>
             <LandlordBottomBar />
-        </div>
+        </>
     );
 }

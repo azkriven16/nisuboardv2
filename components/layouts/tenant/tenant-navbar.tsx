@@ -13,6 +13,8 @@ export default function TenantNavbar() {
                 <Logo />
 
                 <div className="flex items-center gap-2 pl-4 border-l">
+                    <UserButtonComponent />
+
                     <Drawer>
                         <DrawerTrigger asChild>
                             <Button variant="ghost" size="icon">
@@ -32,9 +34,6 @@ export default function TenantNavbar() {
                                 </Link>
                                 <div className="flex items-center px-4 py-3 text-sm hover:bg-muted transition-colors border-b">
                                     <ThemeToggle /> Theme Toggle
-                                </div>
-                                <div className="flex items-center px-4 py-3 hover:bg-muted transition-colors">
-                                    <UserButtonComponent />
                                 </div>
                             </div>
                         </DrawerContent>

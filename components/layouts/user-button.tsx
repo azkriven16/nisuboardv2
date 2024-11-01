@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
     SignInButton,
     SignedIn,
@@ -7,7 +8,6 @@ import {
     UserButton,
     useClerk,
 } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 import { IconUser } from "@tabler/icons-react";
 
 export default function UserButtonComponent() {
@@ -25,13 +25,15 @@ export default function UserButtonComponent() {
     return (
         <>
             <SignedIn>
-                <UserButton
-                    appearance={{
-                        elements: {
-                            avatarBox: "h-[32px] w-[32px]",
-                        },
-                    }}
-                />
+                <div className="flex items-center gap-2">
+                    <UserButton
+                        appearance={{
+                            elements: {
+                                avatarBox: "h-[20px] w-[20px]",
+                            },
+                        }}
+                    />
+                </div>
             </SignedIn>
             <SignedOut>
                 <SignInButton>

@@ -4,7 +4,7 @@ import db from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-export default async function LandlordPage() {
+export default async function LandlordManagePage() {
     const { userId } = await auth();
 
     if (!userId) {
@@ -13,7 +13,7 @@ export default async function LandlordPage() {
     const listings = await db.listing.findMany({
         where: {
             userId: userId,
-            approved: true,
+            approved: false,
         },
     });
 

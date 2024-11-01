@@ -14,8 +14,10 @@ export const metadata: Metadata = {
 };
 
 export default async function TenantLayout({ children }: PropsWithChildren) {
-    const isAdmin = await checkRole("admin");
-    const isLandlord = await checkRole("landlord");
+    const [isAdmin, isLandlord] = await Promise.all([
+        checkRole("admin"),
+        checkRole("landlord"),
+    ]);
 
     if (isAdmin) {
         redirect("/admin");
