@@ -1,6 +1,19 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { clerkMiddleware, clerkClient } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+export default clerkMiddleware(
+    async (auth, req) => {
+        const clerkAuth = await auth();
+        const clerk = await clerkClient();
+        if (clerkAuth.userId && !clerkAuth.sessionClaims?.metadata.role) {
+            await clerk.users.updateUser(clerkAuth.userId, {
+                publicMetadata: {
+                    role: "tenant",
+                },
+            });
+        }
+    },
+    { debug: true }
+);
 
 export const config = {
     matcher: [

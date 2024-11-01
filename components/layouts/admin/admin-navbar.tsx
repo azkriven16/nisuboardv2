@@ -12,7 +12,7 @@ export default function AdminNavbar() {
 
                 <div className="flex items-center gap-2 pl-4 border-l">
                     <Link
-                        href="/find-user"
+                        href="/admin/find-user"
                         className="text-muted-foreground hover:text-primary transition-colors"
                     >
                         <IconSearch className="h-5 w-5" />

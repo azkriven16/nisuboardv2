@@ -28,7 +28,6 @@ export default function RootLayout({
     return (
         <ClerkProvider
             signInFallbackRedirectUrl="/"
-            signInForceRedirectUrl="/"
             appearance={{
                 variables: {
                     colorPrimary: "hsl(263.4, 70%, 50.4%)",
