@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
 import { fromLonLat } from "ol/proj";
 import "ol/ol.css";
 import { IconCurrentLocation, IconPlus, IconMinus } from "@tabler/icons-react";
@@ -15,6 +14,7 @@ import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
 import { Style, Circle, Fill, Stroke } from "ol/style";
 import { Geometry } from "ol/geom";
+import XYZ from "ol/source/XYZ";
 
 interface TenantMapProps {
     center?: [number, number];
@@ -124,8 +124,21 @@ export default function TenantMap({
             mapInstanceRef.current = new Map({
                 target: mapRef.current,
                 layers: [
+                    // Satellite layer
                     new TileLayer({
-                        source: new OSM(),
+                        source: new XYZ({
+                            url: `https://api.maptiler.com/tiles/satellite-v2/{z}/{x}/{y}.jpg?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`,
+                            maxZoom: 20,
+                        }),
+                    }),
+                    // Labels layer
+                    new TileLayer({
+                        source: new XYZ({
+                            url: `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}`,
+                            maxZoom: 20,
+                            attributions:
+                                '© <a href="https://www.maptiler.com">MapTiler</a>',
+                        }),
                     }),
                 ],
                 view: new View({
@@ -151,7 +164,7 @@ export default function TenantMap({
                 ref={mapRef}
                 className="h-full w-full rounded-lg overflow-hidden"
             />
-            <div className="fixed right-12 bottom-20 z-50 flex flex-col gap-2">
+            <div className="fixed right-4 bottom-24 z-50 flex flex-col gap-2">
                 <Button
                     onClick={() => handleZoom(1)}
                     className="p-6 rounded-full invert transition-colors"
