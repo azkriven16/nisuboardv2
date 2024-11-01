@@ -18,6 +18,7 @@ import XYZ from "ol/source/XYZ";
 import { Listing } from "@prisma/client";
 import Cluster from "ol/source/Cluster";
 import { Slider } from "@/components/ui/slider";
+import { useRouter } from "next/navigation";
 
 interface TenantMapProps {
     center?: [number, number];
@@ -30,6 +31,7 @@ export default function TenantMap({
     zoom = 13,
     listings,
 }: TenantMapProps) {
+    const router = useRouter();
     const mapRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<Map | null>(null);
     const userLocationLayerRef = useRef<VectorLayer<
@@ -241,6 +243,51 @@ export default function TenantMap({
             });
 
             mapInstanceRef.current.addLayer(listingsLayer);
+
+            // Add click handler for listings
+            mapInstanceRef.current.on("click", (event) => {
+                const feature = mapInstanceRef.current?.forEachFeatureAtPixel(
+                    event.pixel,
+                    (feature) => feature
+                );
+
+                if (feature) {
+                    const features = feature.get("features");
+                    if (features?.length === 1) {
+                        const listing = features[0].get("listing");
+                        router.push(`/listing?id=${listing.id}`);
+                    } else if (features?.length > 1) {
+                        // Get the coordinates of the cluster
+                        const geometry = feature.getGeometry();
+                        if (geometry && "getCoordinates" in geometry) {
+                            const coordinates = (
+                                geometry.getCoordinates as () => number[]
+                            )();
+                            // Zoom in to the cluster
+                            mapInstanceRef.current?.getView().animate({
+                                center: coordinates,
+                                zoom:
+                                    (mapInstanceRef.current
+                                        ?.getView()
+                                        .getZoom() || 0) + 2,
+                                duration: 1000,
+                            });
+                        }
+                    }
+                }
+            });
+
+            // Add pointer cursor when hovering over features
+            mapInstanceRef.current.on("pointermove", (event) => {
+                const pixel = mapInstanceRef.current?.getEventPixel(
+                    event.originalEvent
+                );
+                const hit = mapInstanceRef.current?.hasFeatureAtPixel(pixel!);
+                const target = mapInstanceRef.current?.getTarget();
+                if (target instanceof HTMLElement) {
+                    target.style.cursor = hit ? "pointer" : "";
+                }
+            });
         }
 
         // Cleanup function
@@ -250,7 +297,7 @@ export default function TenantMap({
                 mapInstanceRef.current = null;
             }
         };
-    }, [center, zoom, filteredListings]);
+    }, [center, zoom, filteredListings, router]);
 
     return (
         <div className="relative h-screen w-screen">
@@ -281,7 +328,7 @@ export default function TenantMap({
             <div className="fixed right-4 bottom-24 z-50 flex flex-col gap-2">
                 <Button
                     onClick={() => handleZoom(1)}
-                    className="p-6 rounded-full invert transition-colors"
+                    className="p-6 rounded-full invert transition-colors cursor-pointer"
                     title="Zoom in"
                     size="icon"
                 >
@@ -289,7 +336,7 @@ export default function TenantMap({
                 </Button>
                 <Button
                     onClick={() => handleZoom(-1)}
-                    className="p-6 rounded-full invert transition-colors"
+                    className="p-6 rounded-full invert transition-colors cursor-pointer"
                     title="Zoom out"
                     size="icon"
                 >
@@ -297,7 +344,7 @@ export default function TenantMap({
                 </Button>
                 <Button
                     onClick={handleUserLocation}
-                    className="p-6 rounded-full invert transition-colors"
+                    className="p-6 rounded-full invert transition-colors cursor-pointer"
                     title="Go to my location"
                     size="icon"
                 >
