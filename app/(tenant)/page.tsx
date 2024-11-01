@@ -1,6 +1,7 @@
 import Section from "@/components/layouts/section";
 import db from "@/lib/db";
-import ListingCard from "@/components/common/listing-card";
+import ListingCard from "@/components/card/listing-card";
+import { ListingCardContainer } from "@/components/card/listing-card-container";
 
 export default async function TenantPage() {
     const listings = await db.listing.findMany({
@@ -11,11 +12,7 @@ export default async function TenantPage() {
 
     return (
         <Section>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {listings.map((listing) => (
-                    <ListingCard key={listing.id} listing={listing} />
-                ))}
-            </div>
+            <ListingCardContainer listings={listings} />
         </Section>
     );
 }
