@@ -33,7 +33,7 @@ export default function TenantNavbar() {
                                     Become a Landlord
                                 </Link>
                                 <div className="flex items-center px-4 py-3 text-sm hover:bg-muted transition-colors border-b">
-                                    <ThemeToggle /> Theme Toggle
+                                    <ThemeToggle />
                                 </div>
                             </div>
                         </DrawerContent>

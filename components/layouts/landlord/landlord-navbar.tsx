@@ -31,7 +31,7 @@ export default function LandlordNavbar() {
                                     Account Type: Landlord
                                 </div>
                                 <div className="flex items-center px-4 py-3 text-sm hover:bg-muted transition-colors border-b">
-                                    <ThemeToggle /> Theme Toggle
+                                    <ThemeToggle />
                                 </div>
                             </div>
                         </DrawerContent>
