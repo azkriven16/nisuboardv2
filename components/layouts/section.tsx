@@ -28,11 +28,6 @@ export default function Section({ children, className }: SectionProps) {
         const isInWebAppiOS = (window.navigator as any).standalone === true;
         setIsPWA(isStandalone || isInWebAppiOS);
 
-        // Show dialog if not PWA
-        if (!isStandalone && !isInWebAppiOS) {
-            setShowDialog(true);
-        }
-
         // Handle install prompt
         window.addEventListener("beforeinstallprompt", (e) => {
             e.preventDefault();
@@ -60,6 +55,14 @@ export default function Section({ children, className }: SectionProps) {
                 }`}
             >
                 {children}
+                {!isPWA && deferredPrompt && (
+                    <Button
+                        onClick={handleInstall}
+                        className="fixed bottom-4 right-4 z-50"
+                    >
+                        Install App
+                    </Button>
+                )}
             </section>
 
             <Dialog open={showDialog} onOpenChange={setShowDialog}>
@@ -68,7 +71,16 @@ export default function Section({ children, className }: SectionProps) {
                         <DialogTitle>Install Our App</DialogTitle>
                         <DialogDescription>
                             Get a better experience by installing our app on
-                            your device.
+                            your device. Our Progressive Web App (PWA) offers:
+                            <ul className="mt-2 list-disc list-inside space-y-1">
+                                <li>Faster loading times</li>
+                                <li>Offline access to key features</li>
+                                <li>Better performance</li>
+                                <li>Home screen access</li>
+                                <li>Native app-like experience</li>
+                                <li>Automatic updates</li>
+                                <li>Reduced data usage</li>
+                            </ul>
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-4">
@@ -78,7 +90,8 @@ export default function Section({ children, className }: SectionProps) {
                             <p className="text-sm text-gray-500">
                                 To install, click the browser menu and select
                                 &quot;Add to Home Screen&quot; or
-                                &quot;Install&quot;
+                                &quot;Install&quot;. You&apos;ll find all features
+                                readily available, just like a native app.
                             </p>
                         )}
                         <Button
