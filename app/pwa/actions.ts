@@ -10,6 +10,13 @@ webpush.setVapidDetails(
 
 let subscription: PushSubscription | null = null;
 
+interface WebPushSubscription extends PushSubscription {
+    keys: {
+        p256dh: string;
+        auth: string;
+    };
+}
+
 export async function subscribeUser(sub: PushSubscription) {
     subscription = sub;
     // In a production environment, you would want to store the subscription in a database
@@ -31,11 +38,10 @@ export async function sendNotification(message: string) {
 
     try {
         await webpush.sendNotification(
-            subscription,
+            subscription as WebPushSubscription,
             JSON.stringify({
                 title: "Test Notification",
                 body: message,
-                icon: "/icon.png",
             })
         );
         return { success: true };
